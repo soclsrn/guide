@@ -17,6 +17,7 @@ public class UI_GamePopup : UI_Popup
 	}
 	enum Texts
 	{
+		wait_player
 		//TestText
 	}
 
@@ -41,7 +42,7 @@ public class UI_GamePopup : UI_Popup
 		// GetButton((int)Buttons.CollectionButton).gameObject.BindEvent(OnClickCollectionButton);
 
 
-		//GetText((int)Texts.TestText).text = "game text";
+		GetText((int)Texts.wait_player).text = "";
 
 		changeImageAlpha(0, 1);
         changeImageAlpha(0, 2);
@@ -66,7 +67,15 @@ public class UI_GamePopup : UI_Popup
         
     }
 
-	void changeImageAlpha(float a , float img)
+	public void wait()
+	{
+        GetText((int)Texts.wait_player).text = "다른 유저를 기다리는중..";
+    }
+    public void ready()
+    {
+        GetText((int)Texts.wait_player).text = "준비 완료";
+    }
+    void changeImageAlpha(float a , float img)
 	{
 		UnityEngine.Color alpha;
 		switch (img)

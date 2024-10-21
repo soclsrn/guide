@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown = 1f;
     public float dashDistance = 3f;
     public float clickMoveThreshold = 0.1f;
+    public PhotonView pv;
 
     private Vector2 targetPosition;
     private Rigidbody2D rb;
@@ -25,19 +28,22 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        SetNewTarget(mousePosition);
-
-        //대시
-        if (Input.GetMouseButtonDown(0) && Time.time >= lastDashTime + dashCooldown)
+        if (pv.IsMine)
         {
-            StartDash(mousePosition);
-        }
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        Vector2 lookDir = mousePosition - rb.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-        rb.rotation = angle;
+            SetNewTarget(mousePosition);
+
+            //대시
+            if (Input.GetMouseButtonDown(0) && Time.time >= lastDashTime + dashCooldown)
+            {
+                StartDash(mousePosition);
+            }
+
+            Vector2 lookDir = mousePosition - rb.position;
+            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+            rb.rotation = angle;
+        }
     }
 
     void FixedUpdate()
